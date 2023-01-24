@@ -1,8 +1,10 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Routes, Route, Outlet, Link } from "react-router-dom";
-import FirstPage from "./components/FirstPage.jsx";
+// import FirstPage from "./components/FirstPage.jsx";
 import SecondPage from "./components/SecondPage.jsx";
 import ThirdPage from "./components/ThirdPage.jsx";
+
+const FirstPage = lazy(() => import("./components/firstPage")); // importa jsx file tek kada je on potreban, ne ranije (ali treba dodati Suspense komponentu oko Outleta). U Suspense komponentu mogu staviti fallback koji će prikazivati Loading sadržaj (npr. Loading Spinner).
 
 export default function App() {
 	return (
@@ -24,7 +26,9 @@ function NewWrapper() {
 				<Link to="/secondPage">2.</Link>
 				<Link to="/thirdPage">3.</Link>
 			</nav>
-			<Outlet />
+			<Suspense fallback={<h1>Loading...</h1>}>
+				<Outlet />
+			</Suspense>
 		</>
 	);
 }
